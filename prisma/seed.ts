@@ -1,72 +1,72 @@
-import 'dotenv/config';
-import fs from 'fs';
-import path from 'path';
-import { prisma } from '../src/db.js'; // Tambahkan ekstensi .js atau sesuaikan
-import { Role, Lane, Rarity, Currency } from '@prisma/client';
+import "dotenv/config";
+import fs from "node:fs";
+import path from "node:path";
+import { Currency } from "@prisma/client";
+import { prisma } from "../src/db.js";
+
+const readJson = (file: string) =>
+  JSON.parse(fs.readFileSync(path.join(process.cwd(), "data", file), "utf-8"));
 
 async function main() {
-  console.log('Memulai proses seeding...');
+  console.log("Memulai proses seeding...");
 
-  // 1. Kosongkan semua tabel dan reset urutan ID ke 1
-  await prisma.$executeRawUnsafe(
-    `TRUNCATE "PlayerHero", "Player", "Skin", "Hero" RESTART IDENTITY CASCADE;`
-  );
-
-  // 2. Baca dan masukkan data Hero (133 hero)
-  const heroesPath = path.join(process.cwd(), 'data', 'heroes.json');
-  const heroesRaw = JSON.parse(fs.readFileSync(heroesPath, 'utf-8'));
-
-  const heroesData = heroesRaw.map((h: any) => ({
+  // Pilih hanya kolom yang ada di schema
+  const heroes = readJson("heroes.json").map((h: any) => ({
     name: h.name,
-    role: h.primaryRole as Role,
-    lane: h.primaryLane as Lane,
+    role: h.primaryRole,
+    lane: h.primaryLane,
     releaseYear: h.releaseYear,
-    priceBP: h.priceBP ?? null,
-    priceDiamond: h.priceDiamond ?? null,
+    priceBP: h.priceBP,
+    priceDiamond: h.priceDiamond,
   }));
 
-  await prisma.hero.createMany({ data: heroesData });
-  console.log('Berhasil memasukkan 133 Hero.');
-
-  // 3. Baca dan masukkan data Skin (892 skin)
-  const skinsPath = path.join(process.cwd(), 'data', 'skins.json');
-  const skinsRaw = JSON.parse(fs.readFileSync(skinsPath, 'utf-8'));
-
-  const skinsData = skinsRaw.map((s: any) => ({
+  const skins = readJson("skins.json").map((s: any) => ({
     name: s.name,
     heroId: s.heroId,
-    rarity: s.rarity as Rarity,
-    priceDiamond: s.priceDiamond ?? null,
+    rarity: s.rarity,
+    priceDiamond: s.priceDiamond,
   }));
 
-  await prisma.skin.createMany({ data: skinsData });
-  console.log('Berhasil memasukkan 892 Skin.');
+  await prisma.$executeRawUnsafe(
+    `TRUNCATE "PlayerHero", "Player", "Skin", "Hero" RESTART IDENTITY CASCADE;`,
+  );
 
-  // 4. Masukkan 3 Player awal
+  await prisma.hero.createMany({ data: heroes });
+  console.log(`Berhasil memasukkan ${heroes.length} hero.`);
+
+  await prisma.skin.createMany({ data: skins });
+  console.log(`Berhasil memasukkan ${skins.length} skin.`);
+
   await prisma.player.createMany({
     data: [
-      { nickname: 'ArekITS', bp: 1500, diamond: 75 },
-      { nickname: 'SangPushRank', bp: 13000, diamond: 2892 },
-      { nickname: 'MageSurabaya', bp: 10000, diamond: 0 },
+      { nickname: "ArekITS", bp: 1500, diamond: 75 },
+      { nickname: "SangPushRank", bp: 13000, diamond: 2892 },
+      { nickname: "MageSurabaya", bp: 10000, diamond: 0 },
     ],
   });
-  console.log('Berhasil memasukkan 3 Player.');
+  console.log("Berhasil memasukkan 3 player.");
 
-  // 5. Masukkan data PlayerHero
   await prisma.playerHero.createMany({
     data: [
-      { playerId: 1, heroId: 18, currency: Currency.BP, pricePaid: 2000 },       // Layla
-      { playerId: 1, heroId: 1, currency: Currency.BP, pricePaid: 10800 },       // Miya
-      { playerId: 2, heroId: 84, currency: Currency.DIAMOND, pricePaid: 599 },   // Ling
-      { playerId: 2, heroId: 56, currency: Currency.BP, pricePaid: 32000 },      // Gusion
+      { playerId: 1, heroId: 18, currency: Currency.BP, pricePaid: 2000 }, // Layla
+      { playerId: 1, heroId: 1, currency: Currency.BP, pricePaid: 10800 }, // Miya
+      { playerId: 2, heroId: 84, currency: Currency.DIAMOND, pricePaid: 599 }, // Ling
+      { playerId: 2, heroId: 56, currency: Currency.BP, pricePaid: 32000 }, // Gusion
     ],
   });
-  console.log('Berhasil memasukkan data PlayerHero.');
+  console.log("Berhasil memasukkan data PlayerHero.");
+
+  const [h, s, p] = await Promise.all([
+    prisma.hero.count(),
+    prisma.skin.count(),
+    prisma.player.count(),
+  ]);
+  console.log(`Cek akhir -> hero: ${h}, skin: ${s}, player: ${p}`);
 }
 
 main()
   .catch((e) => {
-    console.error('Terjadi kesalahan saat seeding:', e);
+    console.error("Terjadi kesalahan saat seeding:", e);
     process.exit(1);
   })
   .finally(async () => {

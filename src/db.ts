@@ -1,19 +1,18 @@
-import 'dotenv/config';
-import { Pool, neonConfig } from '@neondatabase/serverless';
-import { PrismaNeon } from '@prisma/adapter-neon';
-import { PrismaClient } from '@prisma/client';
-import ws from 'ws';
+import "dotenv/config";
+import ws from "ws";
+import { neonConfig } from "@neondatabase/serverless";
+import { PrismaNeon } from "@prisma/adapter-neon";
+import { PrismaClient } from "@prisma/client";
 
+// Neon butuh WebSocket di Node.js (diperlukan untuk $transaction)
 neonConfig.webSocketConstructor = ws;
 
-const connectionString = process.env.DATABASE_URL;
-
-// Pastikan connection string terbaca
+const connectionString = process.env["DATABASE_URL"];
 if (!connectionString) {
-  throw new Error('DATABASE_URL tidak ditemukan di file .env');
+  throw new Error("DATABASE_URL tidak ditemukan di file .env");
 }
 
-const pool = new Pool({ connectionString });
-const adapter = new PrismaNeon(pool as any); // Type casting 'as any' untuk menghindari error tipe argumen Pool
+// Prisma 7: PrismaNeon menerima config pool, bukan instance Pool
+const adapter = new PrismaNeon({ connectionString });
 
 export const prisma = new PrismaClient({ adapter });
