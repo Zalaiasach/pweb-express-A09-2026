@@ -2,6 +2,8 @@
 | Nama | NRP |
 | --- | --- |
 | Afriezal Suryapraba Laiasach | 5027251096 | 
+| Muhammad Yusuf | 5027251067 | 
+
 Panduan ini ditujukan untuk anggota kelompok agar dapat meng-clone repositori dan menjalankan proyek di komputer lokal masing-masing tanpa kendala koneksi atau konfigurasi modul.
 
 ---
@@ -119,8 +121,8 @@ pweb-express-A09-2026/
 | **Fitur 1 (Middleware)**: Logger, Not Found, Error Handler | Selesai | Orang 1 |
 | **Fitur 2 (Hero)**: `GET /api/heroes`, `GET /:id`, `POST /` | Selesai | Orang 1 |
 | **Fitur 3 (Skin)**: `GET /api/skins`, `GET /:id` | Selesai | Orang 1 |
-| **Fitur 4 (Player)**: CRUD Player | **Belum** | Orang 2 |
-| **Fitur 5 (Top Up & Match)**: `/topup`, `/matches` | **Belum** | Orang 2 |
+| **Fitur 4 (Player)**: CRUD Player | Selesai | Orang 2 |
+| **Fitur 5 (Top Up & Match)**: `/topup`, `/matches` | Selesai | Orang 2 |
 | **Fitur 6 (Beli Hero)**: `POST /api/players/:player_id/heroes` | **Belum** | Orang 3 |
 | **Fitur 7 (Statistik)**: `GET /api/statistics` | **Belum** | Orang 3 |
 

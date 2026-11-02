@@ -2,6 +2,7 @@ import express from 'express';
 import 'dotenv/config';
 import heroRoutes from './routes/hero.js';
 import skinRoutes from './routes/skin.js';
+import playerRoutes from './routes/player.js';
 import {
   loggerMiddleware,
   notFoundMiddleware,
@@ -28,6 +29,7 @@ app.get('/health', (req, res) => {
 // 3. Pasang route Hero & Skin
 app.use('/api/heroes', heroRoutes);
 app.use('/api/skins', skinRoutes);
+app.use('/api/players', playerRoutes);
 
 // 4. Fallback Not Found (404) untuk rute yang tidak terdaftar
 app.use(notFoundMiddleware);
