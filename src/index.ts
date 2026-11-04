@@ -8,6 +8,7 @@ import {
   notFoundMiddleware,
   errorHandlerMiddleware,
 } from './middleware.js';
+import statisticsRoutes from './routes/statistics.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -30,6 +31,7 @@ app.get('/health', (req, res) => {
 app.use('/api/heroes', heroRoutes);
 app.use('/api/skins', skinRoutes);
 app.use('/api/players', playerRoutes);
+app.use('/api/statistics', statisticsRoutes);
 
 // 4. Fallback Not Found (404) untuk rute yang tidak terdaftar
 app.use(notFoundMiddleware);
