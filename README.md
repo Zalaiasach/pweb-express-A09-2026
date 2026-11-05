@@ -124,8 +124,8 @@ pweb-express-A09-2026/
 | **Fitur 3 (Skin)**: `GET /api/skins`, `GET /:id` | Selesai | Orang 1 |
 | **Fitur 4 (Player)**: CRUD Player | Selesai | Orang 2 |
 | **Fitur 5 (Top Up & Match)**: `/topup`, `/matches` | Selesai | Orang 2 |
-| **Fitur 6 (Beli Hero)**: `POST /api/players/:player_id/heroes` | **Belum** | Orang 3 |
-| **Fitur 7 (Statistik)**: `GET /api/statistics` | **Belum** | Orang 3 |
+| **Fitur 6 (Beli Hero)**: `POST /api/players/:player_id/heroes` | Selesai | Orang 3 |
+| **Fitur 7 (Statistik)**: `GET /api/statistics` | Selesai | Orang 3 |
 
 ---
 
