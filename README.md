@@ -3,6 +3,7 @@
 | --- | --- |
 | Afriezal Suryapraba Laiasach | 5027251096 | 
 | Muhammad Yusuf | 5027251067 | 
+| Sebastian Panjaitan | 5027251040 |
 
 Panduan ini ditujukan untuk anggota kelompok agar dapat meng-clone repositori dan menjalankan proyek di komputer lokal masing-masing tanpa kendala koneksi atau konfigurasi modul.
 
